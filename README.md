@@ -1,4 +1,4 @@
-# DamavisSnakeChallenge
+# #DamavisSnakeChallenge
 
 The challenge consists of finding all possible paths that the snake could take of a given length.
 But this version includes some improvements like a scalable board, edit the snake with Left & Right Click (place or remove).
