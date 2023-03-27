@@ -74,9 +74,11 @@ public class View extends JFrame implements ActionListener{
 			controller.findPossiblePaths(steps, 0, null, model.getSnake());
 			System.out.println("New size " + model.getSnake().getTail().size());
 		} else if(e.getSource()==tfCols) {
+			model.resetPath();
 			model.removeSnake();
 			model.setCols(Integer.parseInt(tfCols.getText()));
 		} else if(e.getSource()==tfRows) {
+			model.resetPath();
 			model.removeSnake();
 			model.setRows(Integer.parseInt(tfRows.getText()));
 		}
