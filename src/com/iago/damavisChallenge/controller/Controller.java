@@ -9,11 +9,10 @@ import com.iago.damavisChallenge.model.Vector2;
 public class Controller {
 	private Model model;
 	
-	private ArrayList<Path> paths;
+	
 	
 	public Controller(Model model) {
 		this.model=model;
-		paths = new ArrayList<>();
 	}
 	
 	public void findPossiblePaths(int maxLength, int currentLength, Path parentPath, Snake snake) {
@@ -22,7 +21,7 @@ public class Controller {
 		}
 		if(maxLength==currentLength) {
 			// End of recursivity, all paths have been already found
-			paths.add(parentPath);
+			model.getPaths().add(parentPath);
 			return;
 		}
 		// Check all possible directions from snake's head position
@@ -73,14 +72,5 @@ public class Controller {
 		return true;
 	}
 	
-	public void printPaths() {
-		System.out.println("--------------");
-		for(Path p:paths) {
-			System.out.println("Path: " + p.toString());
-			Vector2 snakeHead = model.getSnake().getHead();
-			snakeHead = p.applyPath(snakeHead);
-			System.out.println("End snake pos: " + snakeHead);
-		}
-	}
 	
 }

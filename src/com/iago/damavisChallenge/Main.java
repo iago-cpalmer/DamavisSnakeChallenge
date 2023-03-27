@@ -1,6 +1,7 @@
 package com.iago.damavisChallenge;
 
 import com.iago.damavisChallenge.model.Model;
+import com.iago.damavisChallenge.view.PaintThread;
 import com.iago.damavisChallenge.view.View;
 import com.iago.damavisChallenge.controller.Controller;
 public class Main {
@@ -13,12 +14,12 @@ public class Main {
 	private static final int ROWS = 5;
 	
 	public static void main(String[] args) {
-		model = new Model(COLS, ROWS , 1,1);
+		model = new Model(COLS, ROWS, 1,1);
 		controller = new Controller(model);
 		view = new View(controller, model);
-		
+		(new PaintThread(view)).run();
 		controller.findPossiblePaths(2, 0, null, model.getSnake());
-		controller.printPaths();
+		model.printPaths();
 	}
 	
 }
