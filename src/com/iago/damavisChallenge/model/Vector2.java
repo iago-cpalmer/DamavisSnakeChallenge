@@ -36,4 +36,9 @@ public class Vector2 {
 		this.x=this.x+b.getX();
 		this.y=this.y + b.getY();
 	}
+	
+	public boolean equals(int x, int y) {
+		return this.x==x && this.y==y;
+	}
+	
 }

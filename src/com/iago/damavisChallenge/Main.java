@@ -18,8 +18,6 @@ public class Main {
 		controller = new Controller(model);
 		view = new View(controller, model);
 		(new PaintThread(view)).run();
-		controller.findPossiblePaths(2, 0, null, model.getSnake());
-		model.printPaths();
 	}
 	
 }

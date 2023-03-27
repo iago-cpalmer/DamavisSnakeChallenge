@@ -17,6 +17,7 @@ public class Controller {
 	
 	public void findPossiblePaths(int maxLength, int currentLength, Path parentPath, Snake snake) {
 		if(parentPath==null) {
+			this.model.resetPath();
 			parentPath = new Path(maxLength);
 		}
 		if(maxLength==currentLength) {
@@ -25,32 +26,41 @@ public class Controller {
 			return;
 		}
 		// Check all possible directions from snake's head position
-		int[] movsX = {-1,0,1};
-		int[] movsY = {-1,0,1};
+		int[] movs = {-1,1};
 		Vector2 snakeHead = model.getSnake().getHead();
+		
 		// Apply current path
 		snakeHead = parentPath.applyPath(snakeHead);
-		
-		for(int i = 0; i < movsX.length; i++) {
-			for(int j = 0; j < movsY.length; j++) {
-				// Check if new position is valid
-				// For a position to be valid it must be
-				// inside the board, cannot share square
-				// with any of its tails and cannot be diagonal
-				// Make an other snake from the last snake
-				snake = new Snake(snake.getHead(), snake.getTail());
-				Vector2 newPos = new Vector2(snakeHead.getX()+movsX[i], snakeHead.getY()+movsY[j]);
-				// Update the tail of the snake with the new positions to check if head collides with any square of its tail
+		Snake ogSnake = new Snake(snakeHead, snake.getTail());
+		for(int i = 0; i < movs.length; i++) {
+			Vector2 newPos = new Vector2(snakeHead.getX()+movs[i], snakeHead.getY());
+			if(isValid(newPos) && !ogSnake.inPosition(newPos.getX(), newPos.getY())) {
+				snake = new Snake(ogSnake.getHead(), ogSnake.getTail());
 				snake.updateTail(newPos);
-				if(isValid(newPos) && notOccupied(newPos, snake) && movsX[i]!=movsY[j] && (movsX[i]==0 || movsY[j]==0)) {
-					// The new position is valid
-					Path childPath = new Path(maxLength);
-					childPath.setSteps(parentPath.getSteps());
-					childPath.addStep(new Vector2(movsX[i], movsY[j]));
-					findPossiblePaths(maxLength, currentLength+1, childPath, snake);
-				}
+				// The new position is valid
+				Path childPath = new Path(maxLength);
+				childPath.setSteps(parentPath.getSteps());
+				childPath.addStep(new Vector2(movs[i], 0));
+				findPossiblePaths(maxLength, currentLength+1, childPath, snake);
+				
 			}
+			
 		}
+		
+		for(int i = 0; i < movs.length; i++) {
+			Vector2 newPos = new Vector2(snakeHead.getX(), snakeHead.getY()+movs[i]);
+			if(isValid(newPos) && !ogSnake.inPosition(newPos.getX(), newPos.getY())) {
+				snake = new Snake(ogSnake.getHead(), ogSnake.getTail());
+				snake.updateTail(newPos);
+				// The new position is valid
+				Path childPath = new Path(maxLength);
+				childPath.setSteps(parentPath.getSteps());
+				childPath.addStep(new Vector2(0, movs[i]));
+				findPossiblePaths(maxLength, currentLength+1, childPath, snake);
+			}
+			
+		}
+		
 	}
 	
 	public boolean isValid(Vector2 pos) {
